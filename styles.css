@@ -1,61 +1,53 @@
-/* Umumiy dizayn */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #0f0f1f, #000);
-  color: #fff;
-  text-align: center;
-}
+import React, { useEffect, useState } from "react";
+import "./style.css";
 
-/* Glow effekt */
-.glow {
-  font-size: 2.5em;
-  text-shadow: 0 0 15px cyan, 0 0 25px blue, 0 0 40px violet;
-  animation: pulse 2s infinite alternate;
-}
+const App = () => {
+  const [lang, setLang] = useState("en");
 
-@keyframes pulse {
-  from { text-shadow: 0 0 10px cyan, 0 0 20px blue; }
-  to   { text-shadow: 0 0 25px violet, 0 0 40px magenta; }
-}
+  useEffect(() => {
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "YOUR_CLIENT_ID", // Google Client ID shu yerga yozing
+        callback: handleCredentialResponse
+      });
 
-/* Kurs kartalari */
-#courses {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 30px;
-  flex-wrap: wrap;
-}
+      google.accounts.id.renderButton(
+        document.getElementById("googleSignIn"),
+        { theme: "outline", size: "large", shape: "pill" }
+      );
+    };
+  }, []);
 
-.course-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(0,255,255,0.3);
-  border-radius: 12px;
-  padding: 20px;
-  width: 200px;
-  box-shadow: 0 0 15px rgba(0,255,255,0.3);
-  transition: transform 0.3s;
-}
+  const handleCredentialResponse = (response) => {
+    console.log("Encoded JWT ID token: " + response.credential);
+    alert(lang === "en" ? "Login successful!" : "Kirish muvaffaqiyatli!");
+  };
 
-.course-card:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 25px cyan;
-}
+  const texts = {
+    en: {
+      title: "Login with Google",
+      subtitle: "Hologram Style Login",
+      toggle: "Switch to Uzbek"
+    },
+    uz: {
+      title: "Google bilan kirish",
+      subtitle: "Gologram uslubida login",
+      toggle: "Ingliz tiliga o'tish"
+    }
+  };
 
-/* Til tugmalari */
-.lang-switch button {
-  background: black;
-  border: 1px solid cyan;
-  color: cyan;
-  padding: 5px 10px;
-  margin: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+  return (
+    <div className="container">
+      <div className="hologram-card">
+        <h1 className="title">{texts[lang].title}</h1>
+        <p className="subtitle">{texts[lang].subtitle}</p>
+        <div id="googleSignIn"></div>
+        <button className="toggle-btn" onClick={() => setLang(lang === "en" ? "uz" : "en")}>
+          {texts[lang].toggle}
+        </button>
+      </div>
+    </div>
+  );
+};
 
-.lang-switch button:hover {
-  background: cyan;
-  color: black;
-}
+export default App;
