@@ -1,37 +1,16 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neyron Akademiya</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google OAuth Hologram Login</title>
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <link rel="stylesheet" href="%PUBLIC_URL%/style.css" />
+  
+  <!-- Google Identity Services API -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-  <header>
-    <h1 class="glow">🚀 Neyron Akademiya</h1>
-    <div class="lang-switch">
-      <button onclick="setLang('uz')">O‘zbekcha</button>
-      <button onclick="setLang('en')">English</button>
-    </div>
-  </header>
-
-  <main>
-    <section id="hero">
-      <h2 id="title">AI kurslari bilan kelajakni o‘rganing</h2>
-      <p id="subtitle">Sun’iy intellekt, Runway, Veo3 va KlingAI integratsiyasi bilan</p>
-    </section>
-
-    <section id="courses">
-      <div class="course-card">🤖 AI Asoslari</div>
-      <div class="course-card">🎬 Runway & Veo3</div>
-      <div class="course-card">💡 KlingAI bilan kreativlik</div>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; <span id="year"></span> Neyron Akademiya</p>
-  </footer>
-
-  <script src="app.js"></script>
+  <div id="root"></div>
 </body>
 </html>
