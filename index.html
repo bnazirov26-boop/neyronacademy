@@ -1,49 +1,44 @@
-google.accounts.id.renderButton(
-                document.getElementById("signInButton"),
-                {
-                    type: "standard",
-                    theme: "filled_blue",
-                    size: "large",
-                    text: "signin_with",
-                    shape: "pill",
-                    logo_alignment: "left"
-                }
-            );
-
-            google.accounts.id.prompt();
-        };
-
-        function handleCredentialResponse(response) {
-            // Decode the JWT token to get user information
-            const responsePayload = parseJwt(response.credential);
-            
-            document.getElementById("userName").textContent = responsePayload.name;
-            document.getElementById("userImage").src = responsePayload.picture;
-            document.getElementById("userInfo").style.display = "flex";
-            document.getElementById("signInButton").style.display = "none";
-            
-            console.log("ID: " + responsePayload.sub);
-            console.log('Full Name: ' + responsePayload.name);
-            console.log('Given Name: ' + responsePayload.given_name);
-            console.log('Family Name: ' + responsePayload.family_name);
-            console.log("Image URL: " + responsePayload.picture);
-            console.log("Email: " + responsePayload.email);
+<script>
+        // Open & Close Modal
+        function openModal() {
+            document.getElementById('aiModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('aiModal').style.display = 'none';
         }
 
-        function parseJwt(token) {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            
-            return JSON.parse(jsonPayload);
+        // Language toggle
+        let currentLang = 'EN';
+        function toggleLang() {
+            currentLang = currentLang === 'EN' ? 'UZ' : 'EN';
+            alert('Language switched to ' + currentLang);
         }
 
-        // AI Assistant button functionality
-        document.querySelector('.ai-btn').addEventListener('click', function() {
-            alert('AI Assistant is activated! How can I help you today?');
-        });
+        // Chat Functionality (Dummy for now)
+        function sendMessage() {
+            const input = document.getElementById('userInput').value;
+            if (!input) return;
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += <p><b>You:</b> ${input}</p>;
+            document.getElementById('userInput').value = '';
+
+            // Placeholder AI response
+            setTimeout(() => {
+                chatBox.innerHTML += <p><b>AI:</b> Thinking...</p>;
+            }, 500);
+        }
+
+        // Voice Recognition (Speech to Text)
+        function startVoice() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = currentLang === 'EN' ? 'en-US' : 'uz-UZ';
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                document.getElementById('userInput').value = event.results[0][0].transcript;
+            }
+        }
     </script>
+
 </body>
 </html>
