@@ -1,16 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Google OAuth Hologram Login</title>
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <link rel="stylesheet" href="%PUBLIC_URL%/style.css" />
-  
-  <!-- Google Identity Services API -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-</head>
-<body>
-  <div id="root"></div>
+google.accounts.id.renderButton(
+                document.getElementById("signInButton"),
+                {
+                    type: "standard",
+                    theme: "filled_blue",
+                    size: "large",
+                    text: "signin_with",
+                    shape: "pill",
+                    logo_alignment: "left"
+                }
+            );
+
+            google.accounts.id.prompt();
+        };
+
+        function handleCredentialResponse(response) {
+            // Decode the JWT token to get user information
+            const responsePayload = parseJwt(response.credential);
+            
+            document.getElementById("userName").textContent = responsePayload.name;
+            document.getElementById("userImage").src = responsePayload.picture;
+            document.getElementById("userInfo").style.display = "flex";
+            document.getElementById("signInButton").style.display = "none";
+            
+            console.log("ID: " + responsePayload.sub);
+            console.log('Full Name: ' + responsePayload.name);
+            console.log('Given Name: ' + responsePayload.given_name);
+            console.log('Family Name: ' + responsePayload.family_name);
+            console.log("Image URL: " + responsePayload.picture);
+            console.log("Email: " + responsePayload.email);
+        }
+
+        function parseJwt(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            
+            return JSON.parse(jsonPayload);
+        }
+
+        // AI Assistant button functionality
+        document.querySelector('.ai-btn').addEventListener('click', function() {
+            alert('AI Assistant is activated! How can I help you today?');
+        });
+    </script>
 </body>
 </html>
